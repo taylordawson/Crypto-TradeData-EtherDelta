@@ -1,0 +1,47 @@
+#!/usr/bin/perl
+
+use strict;
+use Crypto::TradeData;
+use Getopt::Long;
+use IO::File;
+use Data::Dumper;
+use Crypto::TradeData::ConfigParser;
+
+GetOptions(
+    'driver=s'        => \my $driver,
+    'database=s'      => \my $database,
+    'port=s'          => \my $port,
+    'hostname=s'      => \my $hostname,
+    'username=s'      => \my $username,
+    'password=s'      => \my $password,
+    'exchanges=s@{,}' => \my $exchanges,
+    'pairs=s@{,}'     => \my $pairs,      
+    'help=s'          => \my $help,
+);
+
+my $cfg_file = '/Users/taylordaws/Desktop/crypto.cfg';
+
+my $config = Crypto::TradeData::ConfigParser->parse(file => $cfg_file);
+
+$exchanges = ['BITFINEX', 'LIQUI', 'POLINEX', 'GDAX'];
+$pairs = ['btcusd', 'btcusdt'];
+
+my $crypto = Crypto::TradeData->new(
+    exchanges => $exchanges,
+    pairs     => $pairs,
+    driver    => $config->{crypto_db_write}->{driver},
+    database  => $config->{crypto_db_write}->{database},
+    port      => $config->{crypto_db_write}->{port},
+    hostname  => $config->{crypto_db_write}->{hostname},
+    username  => $config->{crypto_db_write}->{username},
+    password  => $config->{crypto_db_write}->{password},
+    websocket_database  => $config->{websocket_db_write}->{database},
+    websocket_port      => $config->{websocket_db_write}->{port},
+    websocket_hostname  => $config->{websocket_db_write}->{hostname},
+    websocket_username  => $config->{websocket_db_write}->{username},
+    websocket_password  => $config->{websocket_db_write}->{password},
+);
+
+$crypto->help() if ($help);
+
+$crypto->run();

@@ -1,0 +1,42 @@
+#!/usr/bin/perl
+
+use strict;
+use Getopt::Long;
+use IO::File;
+use Crypto::TradeData::WebSockets::WebSocketConnector;
+
+GetOptions(
+    'driver=s'        => \my $driver,
+    'database=s'      => \my $database,
+    'port=s'          => \my $port,
+    'hostname=s'      => \my $hostname,
+    'username=s'      => \my $username,
+    'password=s'      => \my $password,
+    'exchanges=s@{,}' => \my $exchanges,
+    'pairs=s@{,}'     => \my $pairs,      
+    'help=s'          => \my $help,
+);
+
+$driver = 'mysql';
+$database = 'taylorda_temp';
+$port = 3306;
+$hostname = '64.62.211.131';
+$username = 'taylorda_master';
+$password = 'Sparky811!';
+$exchanges = ['BITFINEX', 'POLINEX', 'GDAX'];
+$pairs = ['btcusd', 'btcusdt'];
+
+my $crypto = Crypto::TradeData::WebSockets::WebSocketConnector->new(
+    driver    => $driver,
+    pairs     => $pairs,
+    exchanges => $exchanges,
+    database  => $database,
+    port      => $port,
+    hostname  => $hostname,
+    username  => $username,
+    password  => $password,
+    symbol    => 'BTCUSD',
+    url       => 'wss://api.bitfinex.com/ws',
+);
+
+$crypto->start_socket();
