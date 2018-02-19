@@ -17,15 +17,6 @@ GetOptions(
     'help=s'          => \my $help,
 );
 
-$driver = 'mysql';
-$database = 'taylorda_temp';
-$port = 3306;
-$hostname = '64.62.211.131';
-$username = 'taylorda_master';
-$password = 'Sparky811!';
-$exchanges = ['BITFINEX', 'POLINEX', 'GDAX'];
-$pairs = ['btcusd', 'btcusdt'];
-
 my $crypto = Crypto::TradeData::WebSockets::WebSocketConnector->new(
     driver    => $driver,
     pairs     => $pairs,

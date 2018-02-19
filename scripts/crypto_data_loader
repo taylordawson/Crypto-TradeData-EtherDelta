@@ -17,14 +17,10 @@ GetOptions(
     'exchanges=s@{,}' => \my $exchanges,
     'pairs=s@{,}'     => \my $pairs,      
     'help=s'          => \my $help,
+    'cfg_file=s'      => \my $cfg_file,
 );
 
-my $cfg_file = '/Users/taylordaws/Desktop/crypto.cfg';
-
 my $config = Crypto::TradeData::ConfigParser->parse(file => $cfg_file);
-
-$exchanges = ['BITFINEX', 'LIQUI', 'POLINEX', 'GDAX'];
-$pairs = ['btcusd', 'btcusdt'];
 
 my $crypto = Crypto::TradeData->new(
     exchanges => $exchanges,
